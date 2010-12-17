@@ -4,7 +4,7 @@ A horridly implemented scrapy app that will scrape all (?) of Delicious' bookmar
 
 h2. Background
 
-I do a lot of scraping for side projects (like cakepackages) and try very hard to do things as efficiently as possible. While I normally fail at that, I do occasionally like to play with new apis and scraping tasks. The recent *termination* of Delicious by Yahoo has made a lot of people wonder how they could get at the dataset. It is extremely unlikely that yahoo will provide this for users, but it is possible to scrape their site en masse.
+I do a lot of scraping for side projects (like cakepackages) and try very hard to do things as efficiently as possible. While I normally fail at that, I do occasionally like to play with new apis and scraping tasks. The recent **termination** of Delicious by Yahoo has made a lot of people wonder how they could get at the dataset. It is extremely unlikely that yahoo will provide this for users, but it is possible to scrape their site en masse.
 
 Yes, hitting their API would probably result in a similar dataset - it has been over three years since I touched their API - but this was more of an exercise in what I could do in a language I am wholly unfamiliar with (python) and a platform whose API was fun to mess with (scrapy).
 
