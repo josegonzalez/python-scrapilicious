@@ -1,0 +1,90 @@
+h1. Scrapilicious
+
+A horridly implemented scrapy app that will scrape all (?) of Delicious' bookmarks.
+
+h2. Background
+
+I do a lot of scraping for side projects (like cakepackages) and try very hard to do things as efficiently as possible. While I normally fail at that, I do occasionally like to play with new apis and scraping tasks. The recent *termination* of Delicious by Yahoo has made a lot of people wonder how they could get at the dataset. It is extremely unlikely that yahoo will provide this for users, but it is possible to scrape their site en masse.
+
+Yes, hitting their API would probably result in a similar dataset - it has been over three years since I touched their API - but this was more of an exercise in what I could do in a language I am wholly unfamiliar with (python) and a platform whose API was fun to mess with (scrapy).
+
+h2. Nota Bene
+
+I do not condone any ridiculous usage of this, this has nothing to do with my day job, and again, this was simply for learning. YMMV. Works for me.
+
+h2. Requirements
+
+* Python (2.7.1 on my end, but it should be fine anywhere else)
+* Scrapy
+* libxml2 and libxslt2, as well as the Python Modules
+* MySQLdb (for mysql storage)
+
+h2. Installation
+
+I'm on a Mac, so my setup was something like this:
+
+<pre><code>brew install python
+# add brew's python to PATH
+brew install pip
+brew install easy_install
+
+pip install libxml2
+pip install scrapy
+# Symlink libxml2 stuff from the site-packages folder to the python folder
+# Download tar of mysqldb
+gunzip MySQL-python-1.2.3.tar.gz
+tar xvf MySQL-python-1.2.3.tar
+cd MySQL-python-1.2.3c1
+ARCHFLAGS="-arch x86_64" python setup.py build
+sudo python setup.py install
+cd /path/to/dev/folder
+git clone git@github.com:josegonzalez/scrapilicious.git
+cd scrapilicious
+</code></pre>
+
+You can then issue the following command: @scrapy crawl delicious.com@
+
+h2. Usage
+
+As mentioned above, you just need to issue @scrapy crawl delicious.com@ to start scraping. I have already included a @MySQLStorePipeline@ which can be used to store bookmarks in the database. I've also included the schema I'm using in @delicious/schema.sql@.
+
+If you want to store bookmarks in the db, simply alter @delicious/settings.py@ to use the @MySQLStorePipeline@, and also alter the database connection information to match the connection information you are using. The included schema should give you a rough guideline as to how the data is stored, and it should be trivial to implement alternative Pipelines, so long as there is a Python module to support the backend.
+
+I also recommend being nice to Delicious. If you are going to scrape, use rules to ensure you only scrape your own data. I don't even know how large their dataset is, but if everyone here tried to crawl them, I'm sure Yahoo would kill the service a lot faster. If you still intend on crawling them, at least run it all behind *Tor* or something and change the @BOT_NAME@/@BOT_VERSION@.
+
+You'll also need to change the DeliciousSpider from a BaseSpider to a CrawlSpider, but I left that as an exercise to the user. If you've gotten this far, that won't be a problem :)
+
+h2. TODO
+
+The following is a list of things I wasn't able to implement in the last 5 hours due to lack of time, lack of knowledge, and the fact that I have work in the morning:
+
+* Limiting scraping to your own/specific username
+* Limiting scraping to a certain tag
+* Scraping private bookmarks (needs pyopenssl)
+* Fix issues where title is occasionally missing
+* Fix random issue where date is occasionally not set
+* Unit tests (I'd really love to get some sort of harness around this, please ping me!)
+* Update the schema to use MyISAM with full-text indexes across the tags and title fields
+* YABA (Yet-another bookmarking application)
+
+h2. License
+
+Copyright (c) 2010 Jose Diaz-Gonzalez
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
